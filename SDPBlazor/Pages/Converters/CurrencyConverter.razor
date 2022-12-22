@@ -1,0 +1,42 @@
+﻿@page "/CurrencyConverter"
+
+<h3>CurrencyConverter</h3>
+
+<label for="dollar" class="form-label">Dollars</label>
+<input type="number" class="form-control" id="dollar" placeholder="Dollars..." @bind="Dollars" @bind:event="oninput" />
+<input type="number" class="form-control" id="exchange" placeholder="Exchange rate..." @bind="_exchange" @bind:event="oninput" />
+
+@if (_pln != null)
+{
+        <div class="mt-4">
+            <span>In @Dollars $ equal to @_pln.GetValueOrDefault().ToString("0.00") PLN.</span>
+        </div>
+}
+
+@code {
+    double? _pln = null;
+    double? _dollars = null;
+    double? _exchange = null;
+
+    [Parameter]
+    public double CurrencyFactor { get; set; }
+
+    double? Dollars
+    {
+        get => _dollars;
+        set
+        {
+            _dollars = value;
+
+            if(_exchange!=null)
+            {
+                _pln = value * _exchange;
+            }
+            else
+                _pln = value * CurrencyFactor;
+
+        }
+    }
+
+    
+}
